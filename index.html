@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>恋愛クセ診断｜良縁ーおむすびー</title>
+<meta name="description" content="恋愛迷子から抜け出す、最初の一歩。あなたの恋愛のクセを診断します。">
+<style>
+  :root{
+    --bg:#f6f1e9;          /* 生成りの背景 */
+    --card:#fffdf9;        /* カード */
+    --ink:#3a322c;         /* 文字（焦げ茶） */
+    --sub:#8a7d70;         /* 補助文字 */
+    --accent:#9c6b4f;      /* 和モダンの差し色（小豆茶） */
+    --accent-d:#7d5239;
+    --line:#e7ddcf;
+    --soft:#f0e7d8;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Hiragino Mincho ProN","Yu Mincho",YuMincho,"Noto Serif JP",serif;
+    line-height:1.8;
+    letter-spacing:.02em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:24px 18px 60px;min-height:100vh;display:flex;flex-direction:column;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:28px 22px;
+    box-shadow:0 6px 24px rgba(120,90,60,.06);
+  }
+  /* 進捗 */
+  .progress{margin:0 0 18px;}
+  .progress .label{font-size:12px;color:var(--sub);letter-spacing:.1em;margin-bottom:6px;}
+  .bar{height:6px;background:var(--soft);border-radius:99px;overflow:hidden;}
+  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-d));transition:width .35s ease;}
+  /* タイトル */
+  .brand{text-align:center;color:var(--sub);font-size:13px;letter-spacing:.18em;margin-bottom:14px;}
+  h1{font-size:26px;text-align:center;margin:6px 0 4px;font-weight:600;}
+  .catch{text-align:center;color:var(--accent-d);font-size:15px;margin:0 0 22px;}
+  .lead{font-size:15px;color:var(--ink);margin:0 0 26px;text-align:center;}
+  .note{font-size:13px;color:var(--sub);text-align:center;margin:18px 0 0;}
+  /* 設問 */
+  .qnum{font-size:13px;color:var(--accent);letter-spacing:.12em;margin-bottom:8px;}
+  .q{font-size:18px;font-weight:600;margin:0 0 20px;}
+  .choices{display:flex;flex-direction:column;gap:12px;}
+  button.choice{
+    text-align:left;font-family:inherit;font-size:15.5px;color:var(--ink);
+    background:var(--card);border:1.5px solid var(--line);border-radius:14px;
+    padding:15px 16px;cursor:pointer;transition:all .15s ease;line-height:1.65;
+  }
+  button.choice:hover{border-color:var(--accent);}
+  button.choice:active{transform:scale(.99);background:var(--soft);}
+  /* 汎用ボタン */
+  .btn{
+    display:inline-block;font-family:inherit;font-size:16px;font-weight:600;
+    color:#fff;background:linear-gradient(180deg,var(--accent),var(--accent-d));
+    border:none;border-radius:99px;padding:15px 34px;cursor:pointer;
+    box-shadow:0 6px 16px rgba(124,82,57,.28);transition:transform .12s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .center{text-align:center;}
+  .back{margin-top:18px;text-align:center;}
+  .back button{background:none;border:none;color:var(--sub);font-family:inherit;font-size:13px;cursor:pointer;text-decoration:underline;}
+  /* 結果 */
+  .result .koe{font-size:16px;color:var(--accent-d);text-align:center;margin:4px 0 2px;}
+  .result .tcard{width:100%;max-width:300px;border-radius:14px;display:block;margin:0 auto 18px;box-shadow:0 4px 14px rgba(120,90,60,.12);}
+  .result .typrecname{font-size:13px;color:var(--sub);text-align:center;letter-spacing:.14em;}
+  .result h2{font-size:30px;text-align:center;margin:8px 0 6px;font-weight:700;}
+  .result .desc{font-size:15.5px;text-align:center;color:var(--ink);margin:14px 0 8px;}
+  .result .feat{font-size:13.5px;text-align:center;color:var(--ink);margin:16px 0 4px;white-space:pre-line;line-height:2.2;}
+  .result .hr{height:1px;background:var(--line);margin:24px 0;}
+  .result .lead2{font-size:12.5px;margin:0 0 22px;}
+  .fadein{animation:fade .4s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ スタート画面 ============ -->
+  <section id="screen-start" class="card fadein">
+    <div class="brand">結婚相談所　良縁ーおむすびー</div>
+    <h1>恋愛クセ診断</h1>
+    <p class="catch">〜 恋愛迷子から抜け出す、最初の一歩 〜</p>
+    <p class="lead">
+      恋愛や婚活で、<br>
+      「なんだか、いつも同じところでつまずくな」<br>
+      そう感じたこと、ありませんか。<br><br>
+      それは、あなたの「恋愛のクセ」が<br>
+      関係しているかもしれません。<br><br>
+      全部で25問。<br>
+      むずかしく考えず、直感で選んでみてくださいね。
+    </p>
+    <div class="center">
+      <button class="btn" onclick="start()">診断をはじめる</button>
+    </div>
+    <p class="note">所要時間：5分ほど</p>
+  </section>
+
+  <!-- ============ 設問画面 ============ -->
+  <section id="screen-q" class="card hidden">
+    <div class="progress">
+      <div class="label"><span id="qcount">1</span> / 25</div>
+      <div class="bar"><i id="barfill"></i></div>
+    </div>
+    <div class="qnum" id="qcat"></div>
+    <p class="q" id="qtext"></p>
+    <div class="choices" id="choices"></div>
+    <div class="back"><button onclick="goBack()" id="backbtn">← ひとつ前に戻る</button></div>
+  </section>
+
+  <!-- ============ 結果画面 ============ -->
+  <section id="screen-result" class="card result hidden">
+    <img id="r-img" class="tcard" alt="" hidden>
+    <div class="typrecname" id="r-typrec" hidden>あなたの恋愛のクセは</div>
+    <h2 id="r-name" hidden></h2>
+    <p class="koe" id="r-koe"></p>
+    <p class="feat" id="r-feat"></p>
+    <div class="hr"></div>
+    <p class="lead2 center" id="r-lead"></p>
+    <div class="center">
+      <a id="r-cta" class="btn" href="#">LINEで、詳しい結果を見る</a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* =========================================================
+   ① Lステップ「タイプ別タグURL」をここに差し込む（12個）
+   各タイプの結果を受け取った人に、対応するタグが付くURL。
+   （Lステップで「URLクリックでタグ付与」を設定して発行）
+   未設定のうちは "#" のまま＝動作テストは可能。
+   ========================================================= */
+const RESULT_LINE_URLS = {
+  1:  "#",  // ①尽くしすぎる
+  2:  "#",  // ②合わせすぎる
+  3:  "#",  // ③背負いすぎる
+  4:  "#",  // ④守りすぎる
+  5:  "#",  // ⑤警戒しすぎる
+  6:  "#",  // ⑥抱え込みすぎる
+  7:  "#",  // ⑦求めすぎる
+  8:  "#",  // ⑧比べすぎる
+  9:  "#",  // ⑨考えすぎる
+  10: "#",  // ⑩急ぎすぎる
+  11: "#",  // ⑪諦めすぎる
+  12: "#"   // ⑫遠慮しすぎる
+};
+
+/* =========================================================
+   ①-2 タイトルカード画像の置き場所（任意）
+   12枚のタイトルカード（01_尽くしすぎるタイプ.png 〜 12_遠慮しすぎるタイプ.png）を
+   診断ページと同じ場所に置く場合は、そのフォルダを指定（末尾スラッシュ付き）。
+   例：同じ階層に置くなら "./"／サブフォルダなら "title_cards/"／別URLなら "https://.../"
+   空 "" のままなら、結果画面に画像を出さない（文字のみ・テストはこのままでOK）。
+   ========================================================= */
+const IMAGE_BASE = "./";
+
+/* =========================================================
+   ② 12タイプ（表示用）
+   ========================================================= */
+const TYPES = {
+  1:{name:"尽くしすぎる", koe:"「私がいないと、この人ダメかも」", desc:"気づいたら、相手のために動いている人",
+     feat:"気づけば、相手のために動いている。\n「ありがとう」のひとことで、心が満たされる。\n頼まれなくても、つい先回りしてしまう。\nそんな、優しさが体に染みついている人です。"},
+  2:{name:"合わせすぎる", koe:"「私はどっちでもいいよ」", desc:"波風を立てない選択を、選んでしまう人",
+     feat:"デートの場所も、話題も、自然と相手に合わせている。\n「私はどっちでもいいよ」が、口ぐせ。\n争いごとは、できるだけ避けたい。\n波風を立てない選択を、選んでしまう人です。"},
+  3:{name:"背負いすぎる", koe:"「私がしっかりしなきゃ」", desc:"気づくと、関係をリードしている人",
+     feat:"「私がしっかりしなきゃ」が、いつも頭にある。\nデートの計画も連絡も、気づけば自分から。\n頼られると、嬉しい。\nでもふと、ひとりで頑張っている気がする人です。"},
+  4:{name:"守りすぎる", koe:"「この人は、信頼できるかな」", desc:"心を開くまで、じっくり観察してしまう人",
+     feat:"人と距離を縮めるのに、時間がかかる。\n心を開くまで、じっくり相手を見てしまう。\nすぐに本音を見せることは、まずできない。\n慎重に、相手を見極めようとする人です。"},
+  5:{name:"警戒しすぎる", koe:"「また、同じことが起きるかも」", desc:"過去の傷が、心のどこかに残っている人",
+     feat:"過去に傷ついた経験が、心のどこかに残っている。\n優しくされても、すぐには信じられない。\n「裏があるんじゃないか」と、つい身構える。\n無意識に、自分を守ろうとする人です。"},
+  6:{name:"抱え込みすぎる", koe:"「大丈夫、自分でなんとかする」", desc:"弱音を吐くのが、苦手な人",
+     feat:"つらい時も、つい「大丈夫」と言ってしまう。\n人に頼るのが、どこか苦手。\n「自分でなんとかしなきゃ」が、口ぐせ。\n気づけば、ひとりで抱え込んでいる人です。"},
+  7:{name:"求めすぎる", koe:"「妥協は、したくない」", desc:"譲れない理想が、はっきりある人",
+     feat:"理想の相手像が、はっきりしている。\n譲れない条件は、妥協したくない。\n出会った人を、つい自分の基準と比べてしまう。\n自分の幸せに、まっすぐな人です。"},
+  8:{name:"比べすぎる", koe:"「あの人の方が、若いから」", desc:"人と比べて、自分を下げてしまう人",
+     feat:"友人の幸せそうな報告に、心がざわつく。\n「あの子はもう…」と、つい比べてしまう。\n「あの人のほうが若いし」と、自分を下げる。\n人と比べて、苦しくなってしまう人です。"},
+  9:{name:"考えすぎる", koe:"「もし失敗したら、どうしよう」", desc:"動く前に、シミュレーションが止まらない人",
+     feat:"何かを決める前に、あれこれ考えてしまう。\n「もし失敗したら」と、止まらなくなる。\n頭の中で、ぐるぐる悩んでしまう。\n気づけば、考えるばかりで動けない人です。"},
+  10:{name:"急ぎすぎる", koe:"「早く、安心したい」", desc:"ゆっくり関係を育てるのが、もどかしい人",
+     feat:"「早く結婚したい」気持ちが、強くある。\n出会ってすぐ、未来を考えてしまう。\n数回会えば、答えを出したくなる。\nゆっくり育てるのが、もどかしい人です。"},
+  11:{name:"諦めすぎる", koe:"「私なんて、どうせ」", desc:"自分で限界を、決めてしまう人",
+     feat:"「私なんて、どうせ」が、口ぐせ。\nうまくいかないと、すぐ自信をなくす。\n「もう無理かも」と、気持ちが折れる。\n期待して傷つくのが怖くて、先に諦めてしまう人です。"},
+  12:{name:"遠慮しすぎる", koe:"「こう思ってる、けど」", desc:"本音を、なかなか伝えられない人",
+     feat:"本当の気持ちを、なかなか言えない。\n「こう思ってる」と言いたいのに、つい飲み込む。\n嫌われたくなくて、当たり障りなく返してしまう。\n気づけば、自分の本音が見えなくなる人です。"}
+};
+
+/* =========================================================
+   ③ 25問・選択肢・配点（診断ロジック_25問スコア設計.md と一致）
+   s: {タイプ番号: 加点}
+   ========================================================= */
+const QUESTIONS = [
+  {cat:"全体観", q:"恋愛で「うまくいかないな」と感じる時、自分のどんなところが原因だと感じますか？", a:[
+    {t:"つい、相手のために動きすぎてしまう", s:{1:2,3:1}},
+    {t:"なかなか心を開けない、本音を見せられない", s:{4:2,5:1}},
+    {t:"理想や条件で、相手を見てしまう", s:{7:3,8:1}},
+    {t:"タイミングや距離感を、いつも間違えてしまう", s:{10:2,12:1}}
+  ]},
+  {cat:"全体観", q:"デートの後、家に帰ってから一番考えてしまうのは？", a:[
+    {t:"「お相手、楽しんでくれたかな？」と心配する", s:{1:2,2:2}},
+    {t:"「あの一言、変じゃなかったかな…」と自分の言動を振り返る", s:{9:2,5:1}},
+    {t:"「もっと素敵な人と出会えるかも」と他の可能性を考える", s:{7:2,8:1}},
+    {t:"「次のデートはいつ？早く決めたい」と先を考える", s:{10:2,3:1}}
+  ]},
+  {cat:"全体観", q:"友人から「最近、婚活どう？」と聞かれた時、思わず出る本音は？", a:[
+    {t:"「相手のために頑張ってるのに、報われない」", s:{1:2,6:1}},
+    {t:"「いい人がいない、ピンとこない」", s:{7:3}},
+    {t:"「みんな結婚していくのに、私だけ取り残されてる」", s:{8:3}},
+    {t:"「あれこれ考えて、結局動けてないんだよね」", s:{9:2,12:1}}
+  ]},
+  {cat:"全体観", q:"理想のパートナーシップに、一番近いのは？", a:[
+    {t:"私が、お相手を支えてあげられる関係", s:{1:2,2:1}},
+    {t:"べったりしすぎず、ほどよい距離でいられる関係", s:{4:2,6:1}},
+    {t:"一緒にいて、自然体でいられる関係", s:{7:2,9:1,8:1}},
+    {t:"同じペースで、前に進んでいける関係", s:{10:1,3:1}}
+  ]},
+  {cat:"全体観", q:"自分の恋愛のクセを、ひとつだけ言葉にするとしたら？", a:[
+    {t:"与えすぎてしまうクセ", s:{1:3}},
+    {t:"心を閉ざしてしまうクセ", s:{4:2,5:1}},
+    {t:"自分にダメ出ししてしまうクセ", s:{11:2,8:1}},
+    {t:"言いたいことを、言えずに我慢してしまうクセ", s:{12:2,6:1}}
+  ]},
+  {cat:"愛し方", q:"お相手から「今度の休み、何したい？」と聞かれた時、まず頭に浮かぶのは？", a:[
+    {t:"相手の行きたい場所に、合わせよう", s:{2:3}},
+    {t:"私がいいお店を調べて、決めよう", s:{3:2,1:1}},
+    {t:"相手が喜びそうなことを、探そう", s:{1:2,2:1}},
+    {t:"「何したいか」自分でもよくわからない", s:{12:2,4:1}}
+  ]},
+  {cat:"愛し方", q:"お相手が「最近、仕事で疲れてる」と話してきた時、思わずやってしまうことは？", a:[
+    {t:"「私にできることない？」とすぐに動こうとする", s:{1:2,3:1}},
+    {t:"「大変だね、無理しないでね」と相手に合わせて寄り添う", s:{2:3,6:1}},
+    {t:"「私がいろいろ手配するから、休んでて」と引き受ける", s:{3:2}},
+    {t:"「そっか…」と返して、何て言えばいいか迷う", s:{12:2,9:1}}
+  ]},
+  {cat:"愛し方", q:"恋愛中、ふと「あれ？」と感じる瞬間は？", a:[
+    {t:"私ばっかり連絡してる気がする", s:{1:2,3:1}},
+    {t:"自分の意見を、最近言えてない気がする", s:{2:3,12:1}},
+    {t:"なんで私が決めなきゃいけないんだろう", s:{3:2,6:1}},
+    {t:"このままで、本当にいいのかな", s:{9:2,4:1}}
+  ]},
+  {cat:"愛し方", q:"過去の恋愛を振り返って、よく言われたことは？", a:[
+    {t:"「優しすぎるよ」「もっと自分を大事にして」", s:{1:3}},
+    {t:"「本当はどうしたいの？」「君の意見が聞きたい」", s:{2:3}},
+    {t:"「しっかりしてるね」「頼りがいがある」", s:{3:3}},
+    {t:"「何考えてるかわからない」", s:{4:2,12:1}}
+  ]},
+  {cat:"愛し方", q:"「愛されている実感」を、一番感じるのはどんな時？", a:[
+    {t:"自分の頑張りに「ありがとう」と言われた時", s:{1:2,6:1}},
+    {t:"自分の意見を「いいね」と受け入れてもらえた時", s:{2:2,12:1}},
+    {t:"自分が頼っても、嫌な顔をされなかった時", s:{3:2,6:1}},
+    {t:"ただ「そばにいたい」と言われた時", s:{4:2,5:1}}
+  ]},
+  {cat:"心の開き方", q:"新しく出会った男性と、どれくらいで「素」を出せそうですか？", a:[
+    {t:"早く打ち解けたくて、自分から距離を縮めたくなる", s:{10:2}},
+    {t:"3〜5回くらい会って、信頼できそうなら", s:{9:2}},
+    {t:"かなり時間をかけないと、本当の自分は見せられない", s:{4:2,5:2}},
+    {t:"出せるかどうかも、よくわからない", s:{6:2,12:1,4:1}}
+  ]},
+  {cat:"心の開き方", q:"お相手から「何かあった？」と心配されると、つい取りがちな反応は？", a:[
+    {t:"「ううん、なんでもない、大丈夫」", s:{6:3}},
+    {t:"「ちょっとだけ…」と遠慮がちに、少しだけ打ち明ける", s:{12:2}},
+    {t:"「うーん…まだ、うまく言葉にできないかも」", s:{4:2,9:2}},
+    {t:"「気にしないで、いつものことだから」", s:{5:2}}
+  ]},
+  {cat:"心の開き方", q:"お相手が優しい言葉をかけてくれた時、心の奥でよぎる感情は？", a:[
+    {t:"「嬉しい。私も何かお返ししなきゃ」と思う", s:{1:2}},
+    {t:"「裏があるんじゃないかな」と疑ってしまう", s:{5:3}},
+    {t:"「私なんかにそんなこと言ってくれるの？」", s:{11:2,8:1}},
+    {t:"「どう返せばいいんだろう、うまく言葉が出ない」", s:{4:2,12:1}}
+  ]},
+  {cat:"心の開き方", q:"辛い時、誰かに頼ることについて、どう感じますか？", a:[
+    {t:"頼ることに、罪悪感を感じる", s:{6:3}},
+    {t:"頼り方が、よくわからない", s:{4:1,12:1,6:1}},
+    {t:"頼ったら、嫌われるんじゃないかと不安になる", s:{5:2,11:1}},
+    {t:"頼ってもいいけど、結局自分でなんとかしてしまう", s:{3:2,6:1}}
+  ]},
+  {cat:"理想・基準", q:"気になる男性が現れた時、最初にチェックしてしまうのは？", a:[
+    {t:"年収・学歴・職業などの条件", s:{7:3}},
+    {t:"過去に何か問題を起こしていないか、つい疑ってしまう", s:{5:2,9:1}},
+    {t:"周りの男性と比べて、見劣りしないかどうか", s:{8:3}},
+    {t:"この人と、本当に合うかな？という相性", s:{9:2}}
+  ]},
+  {cat:"理想・基準", q:"SNSで、友人の幸せそうな投稿を見た時の気持ちは？", a:[
+    {t:"素直に「よかったね」と思える", s:{2:1}},
+    {t:"「私も早く、ああなりたい」と焦りを感じる", s:{7:2,10:1,8:1}},
+    {t:"「私だけ、取り残されてる」と落ち込んでしまう", s:{8:3}},
+    {t:"「私には、どうせ無理かも」と諦めの気持ちになる", s:{11:3}}
+  ]},
+  {cat:"理想・基準", q:"男性のプロフィールや写真を見せられた時、一番気にしてしまうのは？", a:[
+    {t:"プロフィールを何度も見返して、合うかどうか分析してしまう", s:{9:3}},
+    {t:"自分の理想と、どれくらい合っているかを確認してしまう", s:{7:2,9:1}},
+    {t:"「この人、他の人と比べてどうかな」と考えてしまう", s:{8:2,7:2}},
+    {t:"細かく考えすぎず、とりあえず会ってみたいと思ってしまう", s:{10:1}}
+  ]},
+  {cat:"進め方", q:"気になる男性ができた時、あなたの動き方は？", a:[
+    {t:"一気に距離を縮めようとする", s:{10:3}},
+    {t:"うまくいかない予感がして、踏み出せない", s:{11:2,5:1}},
+    {t:"自分から動くのは苦手で、相手のペースに任せてしまう", s:{12:2,4:1,2:1}},
+    {t:"一度落ち着いて、いろいろ考えてから動く", s:{9:2,4:1}}
+  ]},
+  {cat:"進め方", q:"うまくいかなかった経験を、どう受け止める方ですか？", a:[
+    {t:"「私のせいだ」と自分を責めてしまう", s:{11:3}},
+    {t:"「立ち止まらず、すぐ次に行こう」と切り替える", s:{10:2,3:1}},
+    {t:"「言いたいことを言えなかった」と後悔する", s:{12:3}},
+    {t:"「何が悪かったのか」を、ずっと考え続ける", s:{9:2,5:1}}
+  ]},
+  {cat:"進め方", q:"恋愛中、不満や違和感を感じた時、取りやすい行動は？", a:[
+    {t:"「早く話し合って、解決したい」とすぐ伝える", s:{10:2,3:1}},
+    {t:"「どうせ言ってもわかってもらえない」と諦める", s:{11:3}},
+    {t:"「波風を立てたくない」と飲み込んでしまう", s:{12:3,2:1}},
+    {t:"「もう少し様子を見よう」と、しばらく心にしまう", s:{6:2}}
+  ]},
+  {cat:"愛し方", q:"お相手に何かしてあげた後、つい思うことは？", a:[
+    {t:"「喜んでくれたかな」と、相手の反応が気になる", s:{1:2}},
+    {t:"「私がやらなきゃ回らない」と感じる", s:{3:2,1:1}},
+    {t:"しんどくても、弱音は飲み込んでしまう", s:{6:2,3:1}},
+    {t:"「迷惑じゃなかったかな」と、気をつかう", s:{12:2}}
+  ]},
+  {cat:"進め方", q:"気になる相手から、しばらく連絡が来ない。あなたは？", a:[
+    {t:"自分から、追って連絡してしまう", s:{10:3}},
+    {t:"「もうダメかも」と、諦めモードに入る", s:{11:3}},
+    {t:"「何かしたかな」と、理由を考え続ける", s:{9:2,5:1}},
+    {t:"平気なふりをして、ひとりで抱える", s:{6:2,12:1}}
+  ]},
+  {cat:"理想・基準", q:"お相手の「ちょっと残念なところ」が見えた時は？", a:[
+    {t:"「条件はいいのに、ここが惜しい」と減点する", s:{7:3}},
+    {t:"「他の人なら、もっといいかも」と比べる", s:{8:2,7:1}},
+    {t:"「これは許せるかな」と、頭の中で検討する", s:{9:1}},
+    {t:"「誰にでも欠点はある」と、あまり気にしない", s:{10:1}}
+  ]},
+  {cat:"心の開き方", q:"お相手が、他の女性と楽しそうに話している。よぎる感情は？", a:[
+    {t:"「やっぱり信用できない」と、身構える", s:{5:3}},
+    {t:"「あの人のほうが、魅力的なんだ」と落ち込む", s:{8:2}},
+    {t:"顔には出さず、平静を装って飲み込む", s:{6:2}},
+    {t:"「気にしすぎかな」と、ひとりで考え込む", s:{9:2,5:1}}
+  ]},
+  {cat:"全体観", q:"恋愛で、いちばん「疲れる」と感じるのは？", a:[
+    {t:"相手のために頑張りすぎて、自分のことが後回しになる時", s:{1:1,3:1}},
+    {t:"合わせてばかりで、自分を出せない時", s:{2:2,12:1}},
+    {t:"焦りばかりが、先走ってしまう時", s:{10:2,11:1}},
+    {t:"「どうせダメ」と、期待できなくなる時", s:{11:2,8:1}}
+  ]}
+];
+
+/* =========================================================
+   ④ 進行ロジック
+   ========================================================= */
+let cur = 0;                         // 現在の設問インデックス
+const answers = new Array(QUESTIONS.length).fill(null); // 各設問で選んだ選択肢index
+
+const el = id => document.getElementById(id);
+
+function show(id){
+  ["screen-start","screen-q","screen-result"].forEach(s=>el(s).classList.add("hidden"));
+  el(id).classList.remove("hidden");
+  el(id).classList.remove("fadein"); void el(id).offsetWidth; el(id).classList.add("fadein");
+  window.scrollTo(0,0);
+}
+
+function start(){ cur=0; answers.fill(null); render(); show("screen-q"); }
+
+function render(){
+  const Q = QUESTIONS[cur];
+  el("qcount").textContent = cur+1;
+  el("barfill").style.width = ((cur+1)/QUESTIONS.length*100)+"%";
+  el("qcat").textContent = "【"+Q.cat+"】";
+  el("qtext").textContent = Q.q;
+  const box = el("choices"); box.innerHTML = "";
+  Q.a.forEach((c,i)=>{
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.textContent = c.t;
+    b.onclick = ()=>choose(i);
+    box.appendChild(b);
+  });
+  el("backbtn").style.visibility = cur===0 ? "hidden" : "visible";
+}
+
+function choose(i){
+  answers[cur] = i;
+  if(cur < QUESTIONS.length-1){ cur++; render(); window.scrollTo(0,0); }
+  else { finish(); }
+}
+
+function goBack(){ if(cur>0){ cur--; render(); window.scrollTo(0,0); } }
+
+/* 判定：12スコア合計 → 最大値（同点は番号の小さいタイプ優先） */
+function finish(){
+  const score = {}; for(let t=1;t<=12;t++) score[t]=0;
+  answers.forEach((ai,qi)=>{
+    if(ai===null) return;
+    const s = QUESTIONS[qi].a[ai].s;
+    for(const t in s) score[t]+=s[t];
+  });
+  let best = 1;
+  for(let t=2;t<=12;t++){ if(score[t] > score[best]) best = t; } // 厳密に大きい時だけ更新＝同点は若い番号が残る
+  showResult(best);
+}
+
+function showResult(t){
+  const T = TYPES[t];
+  const img = el("r-img");
+  if(IMAGE_BASE){
+    // 画像に「あなたの恋愛のクセ／タイプ名」が入っているので、テキスト見出しは出さない（重複回避）
+    const pad = String(t).padStart(2,"0");
+    img.src = IMAGE_BASE + pad + "_" + T.name + "タイプ.png";
+    img.alt = T.name + "タイプ";
+    img.hidden = false;
+    el("r-typrec").hidden = true;
+    el("r-name").hidden = true;
+  } else {
+    // 画像なし（テスト時）はテキスト見出しを代わりに表示
+    img.hidden = true;
+    el("r-typrec").hidden = false;
+    el("r-name").hidden = false;
+    el("r-name").textContent = "「"+T.name+"」";
+  }
+  el("r-koe").textContent = T.koe;
+  el("r-feat").textContent = T.feat || T.desc;
+  el("r-lead").textContent = "で、ここからが本題です👇";
+  el("r-cta").href = RESULT_LINE_URLS[t] || "#";
+  show("screen-result");
+}
+</script>
+</body>
+</html>
