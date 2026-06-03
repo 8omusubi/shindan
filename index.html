@@ -7,14 +7,14 @@
 <meta name="description" content="恋愛迷子から抜け出す、最初の一歩。あなたの恋愛のクセを診断します。">
 <style>
   :root{
-    --bg:#f6f1e9;          /* 生成りの背景 */
-    --card:#fffdf9;        /* カード */
-    --ink:#3a322c;         /* 文字（焦げ茶） */
-    --sub:#8a7d70;         /* 補助文字 */
-    --accent:#9c6b4f;      /* 和モダンの差し色（小豆茶） */
-    --accent-d:#7d5239;
-    --line:#e7ddcf;
-    --soft:#f0e7d8;
+    --bg:#fdf1f0;          /* クリームピンクの背景 */
+    --card:#fffafa;        /* カード */
+    --ink:#4a3a3c;         /* 文字（やわらかい墨） */
+    --sub:#a98a8f;         /* 補助文字 */
+    --accent:#d06a85;      /* 差し色（ローズピンク） */
+    --accent-d:#b85070;    /* 濃いローズ */
+    --line:#f0dde0;
+    --soft:#fbe9ea;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;}
@@ -123,6 +123,7 @@
     <h2 id="r-name" hidden></h2>
     <p class="koe" id="r-koe"></p>
     <p class="feat" id="r-feat"></p>
+    <div id="r-chart"></div>
     <div class="hr"></div>
     <p class="lead2 center" id="r-lead"></p>
     <div class="center">
@@ -140,18 +141,18 @@
    未設定のうちは "#" のまま＝動作テストは可能。
    ========================================================= */
 const RESULT_LINE_URLS = {
-  1:  "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C01",  // ①尽くしすぎる
-  2:  "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C02",  // ②合わせすぎる
-  3:  "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C03",  // ③背負いすぎる
-  4:  "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C04",  // ④守りすぎる
-  5:  "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C05",  // ⑤警戒しすぎる
-  6:  "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C06",  // ⑥抱え込みすぎる
-  7:  "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C07",  // ⑦求めすぎる
-  8:  "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C08",  // ⑧比べすぎる
-  9:  "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C09",  // ⑨考えすぎる
-  10: "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C10",  // ⑩急ぎすぎる
-  11: "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C11",  // ⑪諦めすぎる
-  12: "https://line.me/R/oaMessage/%40149tjanf/?%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C12"   // ⑫遠慮しすぎる
+  1:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C01%E3%80%91",  // ①尽くしすぎる 【診断結果01】
+  2:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C02%E3%80%91",  // ②合わせすぎる 【診断結果02】
+  3:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C03%E3%80%91",  // ③背負いすぎる 【診断結果03】
+  4:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C04%E3%80%91",  // ④守りすぎる 【診断結果04】
+  5:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C05%E3%80%91",  // ⑤警戒しすぎる 【診断結果05】
+  6:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C06%E3%80%91",  // ⑥抱え込みすぎる 【診断結果06】
+  7:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C07%E3%80%91",  // ⑦求めすぎる 【診断結果07】
+  8:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C08%E3%80%91",  // ⑧比べすぎる 【診断結果08】
+  9:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C09%E3%80%91",  // ⑨考えすぎる 【診断結果09】
+  10: "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C10%E3%80%91",  // ⑩急ぎすぎる 【診断結果10】
+  11: "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C11%E3%80%91",  // ⑪諦めすぎる 【診断結果11】
+  12: "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C12%E3%80%91"   // ⑫遠慮しすぎる 【診断結果12】
 };
 
 /* =========================================================
@@ -247,7 +248,7 @@ const QUESTIONS = [
     {t:"なんで私が決めなきゃいけないんだろう", s:{3:2,6:1}},
     {t:"このままで、本当にいいのかな", s:{9:2,4:1}}
   ]},
-  {cat:"愛し方", q:"過去の恋愛を振り返って、よく言われたことは？", a:[
+  {cat:"愛し方", q:"これまで、恋人やまわりの人から、よく言われたのは？", a:[
     {t:"「優しすぎるよ」「もっと自分を大事にして」", s:{1:3}},
     {t:"「本当はどうしたいの？」「君の意見が聞きたい」", s:{2:3}},
     {t:"「しっかりしてるね」「頼りがいがある」", s:{3:3}},
@@ -372,7 +373,11 @@ function render(){
   const Q = QUESTIONS[cur];
   el("qcount").textContent = cur+1;
   el("barfill").style.width = ((cur+1)/QUESTIONS.length*100)+"%";
-  el("qcat").textContent = "【"+Q.cat+"】";
+  const _p = (cur+1)/QUESTIONS.length;
+  el("qcat").textContent = _p < 0.34 ? "リラックスして、直感でどうぞ"
+    : _p < 0.68 ? "半分まで来ました"
+    : _p < 1 ? "あと少しです！"
+    : "これで最後です";
   el("qtext").textContent = Q.q;
   const box = el("choices"); box.innerHTML = "";
   Q.a.forEach((c,i)=>{
@@ -403,10 +408,10 @@ function finish(){
   });
   let best = 1;
   for(let t=2;t<=12;t++){ if(score[t] > score[best]) best = t; } // 厳密に大きい時だけ更新＝同点は若い番号が残る
-  showResult(best);
+  showResult(best, score);
 }
 
-function showResult(t){
+function showResult(t, score){
   const T = TYPES[t];
   const img = el("r-img");
   if(IMAGE_BASE){
@@ -426,6 +431,25 @@ function showResult(t){
   }
   el("r-koe").textContent = T.koe;
   el("r-feat").textContent = T.feat || T.desc;
+  // 傾向グラフ（上位5タイプ）
+  const chart = el("r-chart");
+  if(chart && score){
+    const arr = [];
+    for(let i=1;i<=12;i++) arr.push([i, score[i]||0]);
+    arr.sort((a,b)=> b[1]-a[1] || a[0]-b[0]);
+    const top = arr.slice(0,5);
+    const max = top[0][1] || 1;
+    chart.innerHTML =
+      '<div style="font-size:13px;color:var(--sub);text-align:center;margin:18px 0 12px;letter-spacing:.08em">あなたの傾向（上位5タイプ）</div>' +
+      top.map(function(p){
+        var i=p[0], v=p[1], w=Math.round(v/max*100), on=(i===t);
+        return '<div style="display:flex;align-items:center;gap:8px;margin:7px 0;font-size:11.5px">'
+          +'<span style="flex:none;width:7.5em;text-align:right;white-space:nowrap;color:var(--ink)">'+TYPES[i].name+'</span>'
+          +'<span style="flex:1;background:var(--soft);border-radius:99px;height:10px;overflow:hidden">'
+          +'<i style="display:block;height:100%;border-radius:99px;width:'+w+'%;background:'+(on?'var(--accent-d)':'var(--accent)')+';opacity:'+(on?1:.5)+'"></i></span>'
+          +'</div>';
+      }).join('');
+  }
   el("r-lead").textContent = "で、ここからが本題です👇";
   el("r-cta").href = RESULT_LINE_URLS[t] || "#";
   show("screen-result");
