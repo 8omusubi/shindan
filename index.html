@@ -352,8 +352,9 @@ function render(){
   el("qcount").textContent = cur+1;
   el("barfill").style.width = ((cur+1)/QUESTIONS.length*100)+"%";
   const _p = (cur+1)/QUESTIONS.length;
-  el("qcat").textContent = _p < 0.34 ? "リラックスして、直感でどうぞ"
-    : _p < 0.68 ? "半分まで来ました"
+  el("qcat").textContent = _p < 0.3 ? "リラックスして、直感でどうぞ"
+    : _p < 0.5 ? "その調子です"
+    : _p < 0.65 ? "半分まで来ました"
     : _p < 1 ? "あと少しです！"
     : "これで最後です";
   el("qtext").textContent = Q.q;
