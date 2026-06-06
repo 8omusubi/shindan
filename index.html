@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>恋愛クセ診断｜良縁ーおむすびー</title>
 <meta name="description" content="恋愛迷子から抜け出す、最初の一歩。あなたの恋愛のクセを診断します。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="恋愛クセ診断｜良縁ーおむすびー">
+<meta property="og:description" content="恋愛迷子から抜け出す、最初の一歩。あなたの恋愛のクセを、20問で診断します。">
+<meta property="og:image" content="https://8omusubi.github.io/shindan/ogp.png">
+<meta property="og:url" content="https://8omusubi.github.io/shindan/">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   :root{
     --bg:#fdf1f0;          /* クリームピンクの背景 */
@@ -356,6 +362,7 @@ function render(){
     const b = document.createElement("button");
     b.className = "choice";
     b.textContent = c.t;
+    if(answers[cur]===i) b.classList.add("selected"); // 戻った時、前回選んだ選択肢を表示
     b.onclick = ()=>choose(i, b);
     box.appendChild(b);
   });
