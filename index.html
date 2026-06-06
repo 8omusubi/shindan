@@ -56,6 +56,7 @@
   }
   @media (hover:hover){ button.choice:hover{border-color:var(--accent);} }
   button.choice:active{transform:scale(.99);background:var(--soft);}
+  button.choice.selected{border-color:var(--accent);background:var(--soft);}
   /* 汎用ボタン */
   .btn{
     display:inline-block;font-family:inherit;font-size:16px;font-weight:600;
@@ -385,16 +386,21 @@ function render(){
     const b = document.createElement("button");
     b.className = "choice";
     b.textContent = c.t;
-    b.onclick = ()=>choose(i);
+    b.onclick = ()=>choose(i, b);
     box.appendChild(b);
   });
   el("backbtn").style.visibility = cur===0 ? "hidden" : "visible";
 }
 
-function choose(i){
-  answers[cur] = i;
-  if(cur < QUESTIONS.length-1){ cur++; render(); window.scrollTo(0,0); }
-  else { finish(); }
+function choose(i, btn){
+  if(choose.lock) return; choose.lock = true;        // 二度押し防止
+  if(btn) btn.classList.add("selected");             // 押した瞬間の縁取り
+  setTimeout(function(){
+    choose.lock = false;
+    answers[cur] = i;
+    if(cur < QUESTIONS.length-1){ cur++; render(); window.scrollTo(0,0); }
+    else { finish(); }
+  }, 160);
 }
 
 function goBack(){ if(cur>0){ cur--; render(); window.scrollTo(0,0); } }
