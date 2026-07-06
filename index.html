@@ -2,453 +2,287 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>恋愛クセ診断｜良縁ーおむすびー</title>
-<meta name="description" content="恋愛迷子から抜け出す、最初の一歩。あなたの恋愛のクセを診断します。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="恋愛クセ診断｜良縁ーおむすびー">
-<meta property="og:description" content="恋愛迷子から抜け出す、最初の一歩。あなたの恋愛のクセを、20問で診断します。">
-<meta property="og:image" content="https://8omusubi.github.io/shindan/ogp.png">
-<meta property="og:url" content="https://8omusubi.github.io/shindan/">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>恋愛クセ診断｜恋愛迷子から抜け出す、最初の一歩。</title>
 <style>
-  :root{
-    --bg:#fdf1f0;          /* クリームピンクの背景 */
-    --card:#fffafa;        /* カード */
-    --ink:#4a3a3c;         /* 文字（やわらかい墨） */
-    --sub:#a98a8f;         /* 補助文字 */
-    --accent:#d06a85;      /* 差し色（ローズピンク） */
-    --accent-d:#b85070;    /* 濃いローズ */
-    --line:#f0dde0;
-    --soft:#fbe9ea;
-  }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:"Hiragino Mincho ProN","Yu Mincho",YuMincho,"Noto Serif JP",serif;
-    line-height:1.8;
-    letter-spacing:.02em;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:560px;margin:0 auto;padding:24px 18px 60px;min-height:100vh;display:flex;flex-direction:column;}
-  .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:18px;
-    padding:28px 22px;
-    box-shadow:0 6px 24px rgba(120,90,60,.06);
-  }
-  /* 進捗 */
-  .progress{margin:0 0 18px;}
-  .progress .label{font-size:12px;color:var(--sub);letter-spacing:.1em;margin-bottom:6px;}
-  .bar{height:6px;background:var(--soft);border-radius:99px;overflow:hidden;}
-  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-d));transition:width .35s ease;}
-  /* タイトル */
-  .brand{text-align:center;color:var(--sub);font-size:13px;letter-spacing:.18em;margin-bottom:14px;}
-  h1{font-size:26px;text-align:center;margin:6px 0 4px;font-weight:600;}
-  .catch{text-align:center;color:var(--accent-d);font-size:15px;margin:0 0 22px;}
-  .lead{font-size:15px;color:var(--ink);margin:0 0 26px;text-align:center;}
-  .note{font-size:13px;color:var(--sub);text-align:center;margin:18px 0 0;}
-  /* 設問 */
-  .qnum{font-size:13px;color:var(--accent);letter-spacing:.12em;margin-bottom:8px;}
-  .q{font-size:18px;font-weight:600;margin:0 0 20px;}
-  .choices{display:flex;flex-direction:column;gap:12px;}
-  button.choice{
-    text-align:left;font-family:inherit;font-size:15.5px;color:var(--ink);
-    background:var(--card);border:1.5px solid var(--line);border-radius:14px;
-    padding:15px 16px;cursor:pointer;transition:all .15s ease;line-height:1.65;
-  }
-  @media (hover:hover){ button.choice:hover{border-color:var(--accent);} }
-  button.choice:active{transform:scale(.99);background:var(--soft);}
-  button.choice.selected{border-color:var(--accent);background:var(--soft);}
-  /* 汎用ボタン */
-  .btn{
-    display:inline-block;font-family:inherit;font-size:16px;font-weight:600;
-    color:#fff;background:linear-gradient(180deg,var(--accent),var(--accent-d));
-    border:none;border-radius:99px;padding:15px 34px;cursor:pointer;
-    box-shadow:0 6px 16px rgba(124,82,57,.28);transition:transform .12s ease;
-  }
-  .btn:active{transform:translateY(1px);}
-  .center{text-align:center;}
-  .back{margin-top:18px;text-align:center;}
-  .back button{background:none;border:none;color:var(--sub);font-family:inherit;font-size:13px;cursor:pointer;text-decoration:underline;}
-  /* 結果 */
-  .result .koe{font-size:16px;color:var(--accent-d);text-align:center;margin:4px 0 2px;}
-  .result .tcard{width:100%;max-width:300px;border-radius:14px;display:block;margin:0 auto 18px;box-shadow:0 4px 14px rgba(120,90,60,.12);}
-  .result .typrecname{font-size:13px;color:var(--sub);text-align:center;letter-spacing:.14em;}
-  .result h2{font-size:30px;text-align:center;margin:8px 0 6px;font-weight:700;}
-  .result .desc{font-size:15.5px;text-align:center;color:var(--ink);margin:14px 0 8px;}
-  .result .feat{font-size:13.5px;text-align:center;color:var(--ink);margin:16px 0 4px;white-space:pre-line;line-height:2.2;}
-  .result .hr{height:1px;background:var(--line);margin:24px 0;}
-  .result .lead2{font-size:12.5px;margin:0 0 22px;}
-  .fadein{animation:fade .4s ease;}
-  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
-  .hidden{display:none;}
+:root{
+  --bg:#FAF0F3; --card:#FFFFFF; --ink:#4A3A3E; --rose:#C2516F; --rose-dark:#9C4760;
+  --rose-pale:#F6DFE6; --gold:#C9A227; --line:#E8D5DC; --navy:#3E4A66;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;}
+.wrap{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:16px;}
+.serif{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;}
+.hidden{display:none!important;}
+/* progress */
+.progress{height:6px;background:var(--rose-pale);border-radius:3px;overflow:hidden;margin-bottom:10px;}
+.progress i{display:block;height:100%;width:0%;background:var(--rose);border-radius:3px;transition:width .25s;}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;min-height:32px;}
+.backbtn{border:none;background:#fff;border-radius:8px;padding:6px 12px;color:var(--ink);font-size:13px;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.cheer{font-size:12px;color:var(--rose-dark);}
+/* screens */
+.screen{flex:1;display:flex;flex-direction:column;justify-content:center;}
+.title{ text-align:center;}
+.title .badge{display:inline-block;font-size:12px;letter-spacing:.2em;color:var(--rose-dark);border:1px solid var(--rose);border-radius:999px;padding:2px 14px;margin-bottom:14px;}
+.title h1{font-size:34px;letter-spacing:.06em;color:var(--rose-dark);margin-bottom:10px;}
+.title p.catch{font-size:14px;color:var(--ink);margin-bottom:26px;}
+.note{font-size:12px;color:#9b8288;margin-top:14px;}
+.btn{display:block;width:100%;border:none;border-radius:14px;padding:16px;font-size:17px;font-weight:600;cursor:pointer;}
+.btn-primary{background:var(--rose);color:#fff;box-shadow:0 3px 10px rgba(194,81,111,.35);}
+.btn-outline{background:#fff;color:var(--rose-dark);border:1.5px solid var(--rose);}
+.btn+.btn{margin-top:12px;}
+.btn.pressed{background:var(--rose-dark)!important;color:#fff!important;border-color:var(--rose-dark)!important;transform:scale(.97);}
+.scale-btns button.sel{background:var(--rose)!important;color:#fff!important;border-color:var(--rose)!important;}
+/* question */
+.qcount{font-size:12px;color:#b39aa1;text-align:right;}
+.qcard{background:var(--card);border-radius:18px;padding:34px 22px;box-shadow:0 4px 16px rgba(156,71,96,.10);text-align:center;}
+.qlead{font-size:12px;color:var(--rose-dark);letter-spacing:.15em;margin-bottom:14px;}
+.qtext{font-size:19px;font-weight:600;line-height:1.8;min-height:5.4em;display:flex;align-items:center;justify-content:center;}
+.scale{margin-top:22px;}
+.scale-labels{display:flex;justify-content:space-between;font-size:11px;color:#a08a90;margin-bottom:8px;}
+.scale-btns{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.scale-btns button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:16px 0;font-size:18px;font-weight:700;color:var(--rose-dark);cursor:pointer;transition:transform .06s;}
+.scale-btns button:active{transform:scale(.94);background:var(--rose-pale);}
+/* gender */
+.gtitle{font-size:18px;font-weight:600;text-align:center;margin-bottom:22px;}
+/* result */
+.result{padding-bottom:40px;}
+.rlead{ text-align:center;font-size:13px;color:var(--rose-dark);letter-spacing:.12em;margin:14px 0 10px;}
+.cardimg{width:100%;border-radius:16px;box-shadow:0 6px 20px rgba(156,71,96,.18);display:block;}
+.rname{ text-align:center;margin-top:16px;}
+.rname .ruby{font-size:12px;letter-spacing:.35em;color:var(--gold);}
+.rname h2{font-size:26px;letter-spacing:.04em;margin:2px 0 6px;}
+.rname .rcatch{font-size:14px;color:var(--rose-dark);}
+.section{background:#fff;border-radius:16px;padding:18px;margin-top:18px;box-shadow:0 2px 10px rgba(156,71,96,.08);}
+.section h3{font-size:14px;color:var(--rose-dark);letter-spacing:.1em;margin-bottom:12px;text-align:center;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.bar-row .blabel{width:9em;font-size:12px;color:var(--ink);flex-shrink:0;}
+.bar-track{flex:1;height:12px;background:var(--rose-pale);border-radius:6px;overflow:hidden;}
+.bar-fill{height:100%;background:var(--rose);border-radius:6px;}
+.bar-row.top .bar-fill{background:var(--rose-dark);}
+.bar-row .bval{width:2.6em;font-size:11px;color:#a08a90;text-align:right;}
+.aikotoba{ text-align:center;}
+.aikotoba .word{font-size:22px;font-weight:700;color:var(--rose-dark);background:var(--rose-pale);border-radius:12px;padding:12px;margin:10px 0;letter-spacing:.05em;}
+.aikotoba p{font-size:13px;}
+.small{font-size:11px;color:#a08a90;margin-top:8px;}
+footer{ text-align:center;font-size:11px;color:#b39aa1;padding:18px 0 8px;}
 </style>
 </head>
 <body>
 <div class="wrap">
-
-  <!-- ============ スタート画面 ============ -->
-  <section id="screen-start" class="card fadein">
-    <div class="brand">結婚相談所　良縁ーおむすびー</div>
-    <h1>恋愛クセ診断</h1>
-    <p class="catch">〜 恋愛迷子から抜け出す、最初の一歩 〜</p>
-    <p class="lead">
-      あなたの「恋愛のクセ」がわかる、<br>
-      全20問の診断です。<br><br>
-      恋愛や婚活で、<br>
-      「いつも同じところでつまずくな」<br>
-      そう感じること、ありませんか？<br><br>
-      そのつまずきには、<br>
-      自分でも気づいていない「クセ」が隠れています。<br><br>
-      さっそく、見つけにいきましょう！
-    </p>
-    <div class="center">
-      <button class="btn" onclick="start()">診断をはじめる</button>
+  <div id="chrome" class="hidden">
+    <div class="progress"><i id="pbar"></i></div>
+    <div class="topbar">
+      <button class="backbtn" id="backBtn">← 戻る</button>
+      <span class="cheer" id="cheer"></span>
     </div>
-    <p class="note">所要時間：5分ほど</p>
+  </div>
+
+  <!-- start -->
+  <section id="scr-start" class="screen">
+    <div class="title serif">
+      <span class="badge">良縁ーおむすびー</span>
+      <h1>恋愛クセ診断</h1>
+      <p class="catch">恋愛迷子から抜け出す、最初の一歩。</p>
+      <button class="btn btn-primary" onclick="goGender()">診断をはじめる</button>
+      <p class="note">2分ほどで終わります。直感でお答えください。</p>
+    </div>
   </section>
 
-  <!-- ============ 設問画面 ============ -->
-  <section id="screen-q" class="card hidden">
-    <div class="progress">
-      <div class="label"><span id="qcount">1</span> / 20</div>
-      <div class="bar"><i id="barfill"></i></div>
-    </div>
-    <div class="qnum" id="qcat"></div>
-    <p class="q" id="qtext"></p>
-    <div class="choices" id="choices"></div>
-    <div class="back"><button onclick="goBack()" id="backbtn">← ひとつ前に戻る</button></div>
+  <!-- gender -->
+  <section id="scr-gender" class="screen hidden">
+    <p class="gtitle">はじめに、あなたについて<br>教えてください</p>
+    <button class="btn btn-outline" onclick="pressGo(this,()=>setGender('f'))">女性</button>
+    <button class="btn btn-outline" onclick="pressGo(this,()=>setGender('m'))">男性</button>
   </section>
 
-  <!-- ============ 結果画面 ============ -->
-  <section id="screen-result" class="card result hidden">
-    <img id="r-img" class="tcard" alt="" hidden>
-    <div class="typrecname" id="r-typrec" hidden>あなたの恋愛のクセは</div>
-    <h2 id="r-name" hidden></h2>
-    <p class="koe" id="r-koe"></p>
-    <p class="feat" id="r-feat"></p>
-    <div id="r-chart"></div>
-    <div class="hr"></div>
-    <p class="lead2 center" id="r-lead"></p>
-    <div class="center">
-      <a id="r-cta" class="btn" href="#">LINEで、詳しい結果を見る</a>
+  <!-- question -->
+  <section id="scr-q" class="screen hidden">
+    <div class="qcard">
+      <p class="qlead">どのくらい当てはまりますか？</p>
+      <p class="qtext" id="qtext"></p>
+      <div class="scale">
+        <div class="scale-labels"><span>あてはまらない</span><span>あてはまる</span></div>
+        <div class="scale-btns" id="scaleBtns"></div>
+      </div>
     </div>
-    <p class="note">※ ボタンを押すと、LINEに「合言葉」が出ます。<br>そのまま送信すると、あなたの結果（全4通）が届きます 📩</p>
   </section>
 
+  <!-- result -->
+  <section id="scr-result" class="screen result hidden">
+    <p class="rlead">あなたの恋愛のクセは……</p>
+    <img id="cardImg" class="cardimg" alt="診断結果カード">
+    <div class="rname serif hidden" id="rnameBox">
+      <div class="ruby" id="rRuby"></div>
+      <h2 id="rName"></h2>
+      <p class="rcatch" id="rCatch"></p>
+    </div>
+    <div class="section aikotoba">
+      <h3>── くわしい「取扱説明書」を受け取る ──</h3>
+      <p>LINEに戻って、下の合言葉を<br>そのまま送ってください。<br>あなた専用の取扱説明書が届きます。</p>
+      <div class="word" id="aikotoba"></div>
+      <button class="btn btn-primary" id="lineBtn">LINEで合言葉を送る</button>
+      <p class="small">※ボタンからうまく開けない場合は、合言葉をコピーしてLINEのトークに貼り付けて送ってください</p>
+    </div>
+    <footer>恋愛クセ診断｜良縁ーおむすびー</footer>
+  </section>
 </div>
 
 <script>
-/* =========================================================
-   ① Lステップ「タイプ別タグURL」をここに差し込む（12個）
-   各タイプの結果を受け取った人に、対応するタグが付くURL。
-   （Lステップで「URLクリックでタグ付与」を設定して発行）
-   未設定のうちは "#" のまま＝動作テストは可能。
-   ========================================================= */
+// ====== 設定（あとから差し替え可能） ======
+const IMAGE_BASE = "./cards/";
+// 型別係数（診断ロジック_同意度方式_配点設計.md）実測分布を見て差し替え可
+const COEF = {1:0.972, 2:0.972, 3:1.015, 4:1.035, 5:1.050, 6:0.972, 7:1.005};
+const TIE_PRIORITY = [7,5,3,6,4,1,2];
+// LINEトークへのプリフィルURL（Lステップ設定後に14本入れる。空なら合言葉表示のみ）
 const RESULT_LINE_URLS = {
-  1:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C01%E3%80%91",  // ①尽くしすぎる 【診断結果01】
-  2:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C02%E3%80%91",  // ②合わせすぎる 【診断結果02】
-  3:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C03%E3%80%91",  // ③背負いすぎる 【診断結果03】
-  4:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C04%E3%80%91",  // ④守りすぎる 【診断結果04】
-  5:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C05%E3%80%91",  // ⑤警戒しすぎる 【診断結果05】
-  6:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C06%E3%80%91",  // ⑥抱え込みすぎる 【診断結果06】
-  7:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C07%E3%80%91",  // ⑦求めすぎる 【診断結果07】
-  8:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C08%E3%80%91",  // ⑧比べすぎる 【診断結果08】
-  9:  "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C09%E3%80%91",  // ⑨考えすぎる 【診断結果09】
-  10: "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C10%E3%80%91",  // ⑩急ぎすぎる 【診断結果10】
-  11: "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C11%E3%80%91",  // ⑪諦めすぎる 【診断結果11】
-  12: "https://line.me/R/oaMessage/%40149tjanf/?%E3%80%90%E8%A8%BA%E6%96%AD%E7%B5%90%E6%9E%9C12%E3%80%91"   // ⑫遠慮しすぎる 【診断結果12】
+  "01":"","02":"","03":"","04":"","05":"","06":"","07":"",
+  "08":"","09":"","10":"","11":"","12":"","13":"","14":""
 };
 
-/* =========================================================
-   ①-2 タイトルカード画像の置き場所（任意）
-   12枚のタイトルカードを 01.png〜12.png（半角数字）にリネームして、
-   診断ページと同じ場所に置く場合は、そのフォルダを指定（末尾スラッシュ付き）。
-   ※日本語ファイル名は文字コードのズレで表示できないため、必ず数字名にすること。
-   例：同じ階層に置くなら "./"／サブフォルダなら "title_cards/"／別URLなら "https://.../"
-   空 "" のままなら、結果画面に画像を出さない（文字のみ・テストはこのままでOK）。
-   ========================================================= */
-const IMAGE_BASE = "./";
-
-/* =========================================================
-   ② 12タイプ（表示用）
-   ========================================================= */
-const TYPES = {
-  1:{name:"尽くしすぎる", koe:"「私がいないと、この人ダメかも」", desc:"気づいたら、相手のために動いている人",
-     feat:"気づけば、相手のために動いている。\n「ありがとう」のひとことで、心が満たされる。\n頼まれなくても、つい先回りしてしまう。\nそんな、優しさが体に染みついている人です。"},
-  2:{name:"合わせすぎる", koe:"「私はどっちでもいいよ」", desc:"波風を立てない選択を、選んでしまう人",
-     feat:"デートの場所も、話題も、自然と相手に合わせている。\n「私はどっちでもいいよ」が、口ぐせ。\n争いごとは、できるだけ避けたい。\n波風を立てない選択を、選んでしまう人です。"},
-  3:{name:"背負いすぎる", koe:"「私がしっかりしないと」", desc:"気づくと、関係をリードしている人",
-     feat:"「私がしっかりしないと」が、いつも頭にある。\nデートの計画も連絡も、気づけば自分から。\n頼られると、嬉しい。\nでもふと、ひとりで頑張っている気がする人です。"},
-  4:{name:"守りすぎる", koe:"「この人は、信頼できるかな」", desc:"心を開くまで、じっくり観察してしまう人",
-     feat:"人と距離を縮めるのに、時間がかかる。\n心を開くまで、じっくり相手を見てしまう。\nすぐに本音を見せることは、まずできない。\n慎重に、相手を見極めようとする人です。"},
-  5:{name:"警戒しすぎる", koe:"「また、同じことが起きるかも」", desc:"過去の傷が、心のどこかに残っている人",
-     feat:"過去に傷ついた経験が、心のどこかに残っている。\n優しくされても、すぐには信じられない。\n「裏があるんじゃないか」と、つい身構える。\n無意識に、自分を守ろうとする人です。"},
-  6:{name:"抱え込みすぎる", koe:"「大丈夫、自分でなんとかする」", desc:"弱音を吐くのが、苦手な人",
-     feat:"つらい時も、つい「大丈夫」と言ってしまう。\n人に頼るのが、どこか苦手。\n「自分でなんとかしなきゃ」が、口ぐせ。\n気づけば、ひとりで抱え込んでいる人です。"},
-  7:{name:"求めすぎる", koe:"「妥協は、したくない」", desc:"譲れない理想が、はっきりある人",
-     feat:"理想の相手像が、はっきりしている。\n譲れない条件は、妥協したくない。\n出会った人を、つい自分の基準と比べてしまう。\n自分の幸せに、まっすぐな人です。"},
-  8:{name:"比べすぎる", koe:"「あの人の方が…」", desc:"人と比べて、自分を下げてしまう人",
-     feat:"友人の幸せそうな報告に、心がざわつく。\n「あの子はもう…」と、つい比べてしまう。\n「あの人のほうが若いし」と、自分を下げる。\n人と比べて、苦しくなってしまう人です。"},
-  9:{name:"考えすぎる", koe:"「もし失敗したら、どうしよう」", desc:"動く前に、シミュレーションが止まらない人",
-     feat:"何かを決める前に、あれこれ考えてしまう。\n「もし失敗したら」と、止まらなくなる。\n頭の中で、ぐるぐる悩んでしまう。\n気づけば、考えるばかりで動けない人です。"},
-  10:{name:"急ぎすぎる", koe:"「早く、安心したい」", desc:"ゆっくり関係を育てるのが、もどかしい人",
-     feat:"「早く結婚したい」気持ちが、強くある。\n出会ってすぐ、未来を考えてしまう。\n数回会えば、答えを出したくなる。\nゆっくり育てるのが、もどかしい人です。"},
-  11:{name:"諦めすぎる", koe:"「私なんて、どうせ」", desc:"自分で限界を、決めてしまう人",
-     feat:"「私なんて、どうせ」が、口ぐせ。\nうまくいかないと、すぐ自信をなくす。\n「もう無理かも」と、気持ちが折れる。\n期待して傷つくのが怖くて、先に諦めてしまう人です。"},
-  12:{name:"遠慮しすぎる", koe:"「本当はこう思ってる、けど」", desc:"本音を、なかなか伝えられない人",
-     feat:"本当の気持ちを、なかなか言えない。\n「こう思ってる」と言いたいのに、つい飲み込む。\n嫌われたくなくて、当たり障りなく返してしまう。\n気づけば、自分の本音が見えなくなる人です。"}
-};
-
-/* =========================================================
-   ③ 20問・選択肢・配点（診断ロジック_25問スコア設計.md ベース・2026/6/4に20問化＝旧Q7/8/10/17/21を削除）
-   s: {タイプ番号: 加点}
-   ========================================================= */
+// ====== 質問（診断質問_同意度方式.md v6・信念型21問・固定ミックス順） ======
+// t=型 k=核(同点処理に使用) rev=逆読み先の型(不同意6-vを加点)
 const QUESTIONS = [
-  {cat:"日常", q:"ひとりで入ったカフェ。メニューを前にしたあなたは？", a:[
-    {t:"なかなか決められず、ずっと見比べてしまう", s:{9:3}},
-    {t:"一番人気の、間違いないものにする", s:{4:2,5:1}},
-    {t:"ぱっと直感で決める", s:{10:2}},
-    {t:"「おすすめは？」と聞いて、それにする", s:{2:3}}
-  ]},
-  {cat:"全体観", q:"恋愛で、つい繰り返しがちなパターンは？", a:[
-    {t:"気づけば、いつも私ばかり頑張ってる", s:{1:2,3:1}},
-    {t:"距離が縮まる前に、なぜか終わってしまう", s:{4:2,5:1}},
-    {t:"「この人」と思える相手に、なかなか出会えない", s:{7:3,8:1}},
-    {t:"気持ちが空回りして、すれ違ってしまう", s:{10:2,12:1}}
-  ]},
-  {cat:"心の開き方", q:"お相手が優しい言葉をかけてくれた時、つい出ちゃう反応は？", a:[
-    {t:"素直に受け取れず、ちょっと照れちゃう", s:{1:3}},
-    {t:"「裏があるんじゃないかな」と疑ってしまう", s:{5:1}},
-    {t:"つい、同じように褒め返しちゃう", s:{2:1}},
-    {t:"「どう返せばいいんだろう」と、言葉に詰まる", s:{4:1,12:1}}
-  ]},
-  {cat:"日常", q:"友だちからプレゼントをもらった。まず思うのは？", a:[
-    {t:"お返しに、何かしたくなる", s:{1:3}},
-    {t:"「どうしたの急に？」と、ちょっと身構える", s:{5:2}},
-    {t:"「申し訳ないな」と、ちょっと恐縮する", s:{11:1,12:1}},
-    {t:"「何かあったっけ？」と理由を考える", s:{9:1}}
-  ]},
-  {cat:"理想・基準", q:"新しい出会いがあった時、つい気になってしまうのは？", a:[
-    {t:"年収・学歴・職業などの条件", s:{7:3}},
-    {t:"「変な人じゃないかな」と、つい身構えてしまう", s:{5:2,9:1}},
-    {t:"周りの男性と比べて、見劣りしないかどうか", s:{8:2}},
-    {t:"この人と、本当に合うかな？という相性", s:{9:2}}
-  ]},
-  {cat:"進め方", q:"気になる相手から、しばらく連絡が来ない。あなたは？", a:[
-    {t:"自分から、追って連絡してしまう", s:{10:2}},
-    {t:"「もうダメかも」と、諦めモードに入る", s:{11:3}},
-    {t:"「何かしたかな」と、理由を考え続ける", s:{9:2,5:1}},
-    {t:"大丈夫と思い込んで、不安にフタをする", s:{6:2,12:1}}
-  ]},
-  {cat:"日常", q:"知らない人が多い集まり。自然と取る立ち回りは？", a:[
-    {t:"聞き役にまわって、場に合わせる", s:{2:3}},
-    {t:"自分から話しかけて、場を回す", s:{3:3}},
-    {t:"様子をうかがって、なかなか打ち解けない", s:{4:2,5:1}},
-    {t:"嫌われないか気にして、当たり障りなく", s:{12:3}}
-  ]},
-  {cat:"心の開き方", q:"新しく出会った男性と、どれくらいで「素」を出せそうですか？", a:[
-    {t:"出会ってわりとすぐ、素を出せると思う", s:{10:2}},
-    {t:"何度か会って、信頼できてから", s:{9:2}},
-    {t:"じっくり時間をかけないと、なかなか心を開けない", s:{4:2,5:2}},
-    {t:"そもそも、人に素を見せるのが苦手かも", s:{6:2,12:1,4:1}}
-  ]},
-  {cat:"理想・基準", q:"友だちの幸せな報告を見た時、近いのは？", a:[
-    {t:"素直に「よかった」と思える", s:{2:2}},
-    {t:"「私も頑張ろう」と刺激になる", s:{7:2,10:1,8:1}},
-    {t:"「いいなあ」と、ちょっと比べちゃう", s:{8:3}},
-    {t:"「私には関係ないかな」と、どこか他人事に思う", s:{11:2}}
-  ]},
-  {cat:"日常", q:"来週から、行きたかったところへ旅行に行けるとしたら、どんな気分？", a:[
-    {t:"「誰と行こうかな」と、まずワクワク", s:{1:3,6:1}},
-    {t:"「せっかくだから、妥協なしで楽しみたい」", s:{7:3}},
-    {t:"「映える旅にしたい！」と、はりきる", s:{8:1}},
-    {t:"「今すぐ飛び出したい！」と、うずうず", s:{10:1}},
-    {t:"「何から準備しよう…」と、そわそわ", s:{9:2,12:1}}
-  ]},
-  {cat:"心の開き方", q:"お相手が、他の女性と楽しそうに話している。とっさに、どう感じる？", a:[
-    {t:"「やっぱり、信じちゃダメだ」と、スッと冷める", s:{5:2}},
-    {t:"「あの人のほうが、魅力的なんだ」と落ち込む", s:{8:1}},
-    {t:"本当はモヤモヤ。なのに、平気なフリをしてしまう", s:{6:2}},
-    {t:"「どういう関係なんだろう」と、悪い方にばかり考えてしまう", s:{9:2}}
-  ]},
-  {cat:"愛し方", q:"まわりから、よく言われがちなのは？", a:[
-    {t:"「優しすぎるよ」「もっと自分を大事にして」", s:{1:3}},
-    {t:"「本当はどうしたいの？」「君の意見が聞きたい」", s:{2:3}},
-    {t:"「しっかりしてるね」「頼りがいがある」", s:{3:3}},
-    {t:"「もっと頼っていいよ」「遠慮しなくていいのに」", s:{4:1,12:1}}
-  ]},
-  {cat:"日常", q:"何か新しいことを始める時、あなたは？", a:[
-    {t:"まわりを巻き込んで、引っぱっていく", s:{3:3}},
-    {t:"一人だと不安。誰かと一緒なら、始められる", s:{2:3,12:1}},
-    {t:"まず情報を集めて、慎重に進める", s:{9:2}},
-    {t:"とりあえず、飛び込んでみる", s:{10:1}}
-  ]},
-  {cat:"全体観", q:"恋愛で、いちばん「疲れる」と感じるのは？", a:[
-    {t:"相手のために頑張りすぎて、自分のことが後回しになる時", s:{1:2,3:1}},
-    {t:"合わせてばかりで、自分を出せない時", s:{2:3,12:1}},
-    {t:"焦りばかりが、先走ってしまう時", s:{10:1,11:1}},
-    {t:"つい人と比べて、落ち込んじゃう時", s:{11:1,8:1}}
-  ]},
-  {cat:"心の開き方", q:"辛い時、誰かに頼ることについて、当てはまるのは？", a:[
-    {t:"頼ることに、罪悪感を感じる", s:{6:3}},
-    {t:"頼り方が、よくわからない", s:{4:1,12:1,6:1}},
-    {t:"頼ったら、嫌われるんじゃないかと不安になる", s:{5:2,11:1}},
-    {t:"頼ってもいいけど、結局自分でなんとかしてしまう", s:{3:2,6:1}}
-  ]},
-  {cat:"日常", q:"やることが一気に重なって、いっぱいいっぱいな時。あなたは？", a:[
-    {t:"人に頼らず、一人で抱え込む", s:{6:3}},
-    {t:"「私の要領が悪いんだ」と、自分を責める", s:{11:2}},
-    {t:"「何から手をつけよう…」と、頭が真っ白になる", s:{9:2,12:1}},
-    {t:"とにかく手当たり次第、動く", s:{10:2}}
-  ]},
-  {cat:"理想・基準", q:"初デートの待ち合わせ。お相手がけっこう遅れてきた。あなたは？", a:[
-    {t:"「時間にルーズなのは、ちょっと無理かも」", s:{7:3}},
-    {t:"「他の人なら、こんなことしないのに」", s:{8:2}},
-    {t:"「何かあったのかな…大丈夫かな…」", s:{9:1}},
-    {t:"待つ間、そわそわして落ち着かない", s:{10:1}}
-  ]},
-  {cat:"全体観", q:"理想のパートナーシップに、一番近いのは？", a:[
-    {t:"素直に、頼り合える関係", s:{1:3,2:2}},
-    {t:"べったりしすぎず、ほどよい距離でいられる関係", s:{4:1,6:1}},
-    {t:"お互いを高め合える、刺激のある関係", s:{7:1,8:2}},
-    {t:"同じペースで、前に進んでいける関係", s:{10:1,3:2}},
-    {t:"なんでも本音で、話し合える関係", s:{12:2}}
-  ]},
-  {cat:"日常", q:"買い物で、あなたがいちばん大事にしているのは？", a:[
-    {t:"妥協はせず、こだわって選ぶ", s:{7:3}},
-    {t:"評判やレビューを見て、間違いないか確かめる", s:{8:2}},
-    {t:"人に頼らず、自分で調べて納得して決める", s:{6:1,3:2}},
-    {t:"正直、こだわりはあまりない", s:{2:1}}
-  ]},
-  {cat:"全体観", q:"自分の恋愛のクセを、ひとつだけ言葉にするとしたら？", a:[
-    {t:"与えすぎてしまうクセ", s:{1:3}},
-    {t:"心を閉ざしてしまうクセ", s:{4:2,5:1}},
-    {t:"自分にダメ出ししてしまうクセ", s:{11:2,8:1}},
-    {t:"言いたいことを、言えずに我慢してしまうクセ", s:{12:2,6:1}},
-    {t:"求めすぎてしまうクセ", s:{7:2}}
-  ]}
+ {t:6,k:1,rev:0,q:"条件で選ぶ出会いより、偶然の出会いに惹かれる"},
+ {t:2,k:0,rev:0,q:"人に借りを作るのが、苦手だ"},
+ {t:5,k:1,rev:0,q:"駆け引きするくらいなら、先に気持ちを伝えたい"},
+ {t:4,k:1,rev:0,q:"自分の中の「理想の相手像」は、かなり具体的だ"},
+ {t:1,k:0,rev:0,q:"自分の楽しみより、人が喜ぶ顔を見るほうが満たされる"},
+ {t:7,k:1,rev:0,q:"自分の気持ちに確信が持てるまで、動きたくない"},
+ {t:3,k:1,rev:0,q:"本気になった側が、負けだと思うことがある"},
+ {t:6,k:1,rev:5,q:"焦って動くくらいなら、いいタイミングを待ちたい"},
+ {t:2,k:1,rev:0,q:"守られるより、守るほうが落ち着く"},
+ {t:4,k:1,rev:0,q:"妥協して選ぶくらいなら、選ばないほうがマシだと思う"},
+ {t:7,k:0,rev:0,q:"自分の気持ちなのに、はっきり分からないときがある"},
+ {t:5,k:1,rev:0,q:"関係がどうなるか分からない時間が、いちばん苦しい"},
+ {t:1,k:1,rev:0,q:"わがままを言うくらいなら、我慢するほうを選んでしまう"},
+ {t:3,k:1,rev:0,q:"期待して裏切られるより、最初から期待しないほうがいい"},
+ {t:2,k:1,rev:0,q:"弱っている姿を見せるくらいなら、一人で抱えるほうがいい"},
+ {t:6,k:0,rev:0,q:"人生は、無理に動かすより流れに乗るほうがうまくいくと思う"},
+ {t:4,k:0,rev:0,q:"時間がかかっても、いちばん良いものを選びたい"},
+ {t:5,k:0,rev:4,q:"じっくり考えるより、動きながら考えるほうだ"},
+ {t:7,k:1,rev:0,q:"勢いで決めるくらいなら、決断は遅いほうがいい"},
+ {t:1,k:1,rev:0,q:"好きな人のためなら、自分の予定は簡単に変えられる"},
+ {t:3,k:0,rev:0,q:"心を許せる相手は、少数でいいと思っている"}
 ];
 
-/* =========================================================
-   ④ 進行ロジック
-   ========================================================= */
-let cur = 0;                         // 現在の設問インデックス
-const answers = new Array(QUESTIONS.length).fill(null); // 各設問で選んだ選択肢index
+// ====== 14キャラ（型×性別） ======
+const TYPES = {
+ f: {
+  1:{no:"01",img:"01_seijo.png",     ruby:"GIVER",        name:"ささげる聖女",       catch:"願いごとは、いつも相手の分。"},
+  2:{no:"03",img:"03_queen.png",     ruby:"QUEEN",        name:"孤高の女王",         catch:"人に頼むくらいなら、自分でやったほうが早い。"},
+  3:{no:"05",img:"05_hime.png",      ruby:"PRINCESS",     name:"難攻不落の姫",       catch:"ノックされるたび、鍵が増える。"},
+  4:{no:"07",img:"07_judge.png",     ruby:"JUDGE",        name:"理想の鑑定士",       catch:"減点していくと、誰も残らない。"},
+  5:{no:"09",img:"09_adventurer.png",ruby:"ADVENTURER",   name:"地図を忘れる冒険家", catch:"じっとしてると、不安が追いついてくる。"},
+  6:{no:"11",img:"11_dreamer.png",   ruby:"DREAMER",      name:"星に願う夢見人",     catch:"運命の人と、いつか出会えるはず。"},
+  7:{no:"13",img:"13_detective.png", ruby:"DETECTIVE",    name:"恋を捜査する探偵",   catch:"ときめかないと、好きじゃないのかな。"}
+ },
+ m: {
+  1:{no:"02",img:"02_kishi.png",     ruby:"KNIGHT",       name:"尽くしすぎる騎士",   catch:"もらえる勲章は、「いい人だね」ばかり。"},
+  2:{no:"04",img:"04_hero.png",      ruby:"HERO",         name:"孤軍奮闘の英雄",     catch:"SOSは、受信専用。"},
+  3:{no:"06",img:"06_wolf.png",      ruby:"LONE WOLF",    name:"心を見せない一匹狼", catch:"興味ないフリして、誰より人を見てる。"},
+  4:{no:"08",img:"08_meister.png",   ruby:"MEISTER",      name:"妥協しない職人",     catch:"☆4.8でも、まだ決めない。"},
+  5:{no:"10",img:"10_hunter.png",    ruby:"HUNTER",       name:"待ち伏せできない狩人",catch:"狙いを定める前に、撃ってしまう。"},
+  6:{no:"12",img:"12_samurai.png",   ruby:"SAMURAI",      name:"その時を待つ侍",     catch:"いつでも行ける。まだ行かないだけ。"},
+  7:{no:"14",img:"14_sentinel.png",  ruby:"SENTINEL",     name:"石橋を砕く守人",     catch:"渡る前に、橋が無くなる。"}
+ }
+};
+const TREND_LABEL = {1:"与えすぎ",2:"背負いすぎ",3:"守りすぎ",4:"考えすぎ",5:"動きすぎ",6:"待ちすぎ",7:"確かめすぎ"};
 
-const el = id => document.getElementById(id);
+// ====== 状態 ======
+let state = { gender:null, idx:0, answers:[] };
+const $ = id => document.getElementById(id);
+const save = () => { try{ sessionStorage.setItem("kcshindan_v2", JSON.stringify(state)); }catch(e){} };
+const load = () => { try{ const s=JSON.parse(sessionStorage.getItem("kcshindan_v2")); if(s&&s.answers) state=s; }catch(e){} };
 
 function show(id){
-  ["screen-start","screen-q","screen-result"].forEach(s=>el(s).classList.add("hidden"));
-  el(id).classList.remove("hidden");
-  el(id).classList.remove("fadein"); void el(id).offsetWidth; el(id).classList.add("fadein");
+  ["scr-start","scr-gender","scr-q","scr-result"].forEach(s=>$(s).classList.add("hidden"));
+  $(id).classList.remove("hidden");
+  $("chrome").classList.toggle("hidden", id!=="scr-q");
+  const neutral = (id==="scr-start" || id==="scr-gender");
+  document.body.classList.toggle("phase-neutral", neutral);
+  if(neutral) document.body.classList.remove("theme-m");
   window.scrollTo(0,0);
 }
+function goGender(){ show("scr-gender"); }
+function pressGo(btn, fn){ btn.classList.add("pressed"); setTimeout(()=>{ btn.classList.remove("pressed"); fn(); }, 200); }
+function setGender(g){ state.gender=g; applyTheme(g); state.idx=0; state.answers=[]; save(); renderQ(); }
+function applyTheme(g){ document.body.classList.toggle("theme-m", g==="m"); }
 
-function start(){ cur=0; answers.fill(null); render(); show("screen-q"); }
-
-function render(){
-  const Q = QUESTIONS[cur];
-  el("qcount").textContent = cur+1;
-  el("barfill").style.width = ((cur+1)/QUESTIONS.length*100)+"%";
-  const _p = (cur+1)/QUESTIONS.length;
-  el("qcat").textContent = _p < 0.3 ? "リラックスして、直感でどうぞ"
-    : _p < 0.5 ? "その調子です"
-    : _p < 0.65 ? "半分まで来ました"
-    : _p < 1 ? "あと少しです！"
-    : "これで最後です";
-  el("qtext").textContent = Q.q;
-  const box = el("choices"); box.innerHTML = "";
-  Q.a.forEach((c,i)=>{
-    const b = document.createElement("button");
-    b.className = "choice";
-    b.textContent = c.t;
-    if(answers[cur]===i) b.classList.add("selected"); // 戻った時、前回選んだ選択肢を表示
-    b.onclick = ()=>choose(i, b);
+function renderQ(){
+  const i = state.idx;
+  if(i >= QUESTIONS.length){ showResult(); return; }
+  show("scr-q");
+  $("qtext").textContent = QUESTIONS[i].q;
+  const ratio = i / QUESTIONS.length;
+  $("pbar").style.width = (ratio*100) + "%";
+  $("cheer").textContent = ratio<0.34 ? "直感でサクサクどうぞ" : ratio<0.72 ? "半分をこえました" : "あとちょっと！";
+  const box = $("scaleBtns"); box.innerHTML="";
+  for(let v=1; v<=5; v++){
+    const b=document.createElement("button");
+    b.textContent=v;
+    b.onclick=()=>{ b.classList.add("sel"); state.answers[i]=v; save(); setTimeout(()=>{ state.idx=i+1; save(); renderQ(); }, 160); };
     box.appendChild(b);
-  });
-  el("backbtn").style.visibility = cur===0 ? "hidden" : "visible";
-}
-
-function choose(i, btn){
-  if(choose.lock) return; choose.lock = true;        // 二度押し防止
-  if(btn) btn.classList.add("selected");             // 押した瞬間の縁取り
-  setTimeout(function(){
-    choose.lock = false;
-    answers[cur] = i;
-    if(cur < QUESTIONS.length-1){ cur++; render(); window.scrollTo(0,0); }
-    else { finish(); }
-  }, 160);
-}
-
-function goBack(){ if(cur>0){ cur--; render(); window.scrollTo(0,0); } }
-
-/* 判定：12スコア合計 → 最大値（同点は番号の小さいタイプ優先） */
-function finish(){
-  const score = {}; for(let t=1;t<=12;t++) score[t]=0;
-  answers.forEach((ai,qi)=>{
-    if(ai===null) return;
-    const s = QUESTIONS[qi].a[ai].s;
-    for(const t in s) score[t]+=s[t];
-  });
-  let best = 1;
-  for(let t=2;t<=12;t++){ if(score[t] > score[best]) best = t; } // 厳密に大きい時だけ更新＝同点は若い番号が残る
-  showResult(best, score);
-}
-
-function showResult(t, score){
-  const T = TYPES[t];
-  const img = el("r-img");
-  if(IMAGE_BASE){
-    // 画像に「あなたの恋愛のクセ／タイプ名」が入っているので、テキスト見出しは出さない（重複回避）
-    const pad = String(t).padStart(2,"0");
-    img.src = IMAGE_BASE + pad + ".png";   // 画像は 01.png〜12.png（半角数字）で置く
-    img.alt = T.name + "タイプ";
-    img.hidden = false;
-    img.onerror = function(){ // 画像が読めない時はテキスト見出しに切り替え
-      img.hidden = true;
-      el("r-typrec").hidden = false;
-      el("r-name").hidden = false;
-      el("r-name").textContent = "「"+T.name+"」";
-    };
-    el("r-typrec").hidden = true;
-    el("r-name").hidden = true;
-  } else {
-    // 画像なし（テスト時）はテキスト見出しを代わりに表示
-    img.hidden = true;
-    el("r-typrec").hidden = false;
-    el("r-name").hidden = false;
-    el("r-name").textContent = "「"+T.name+"」";
   }
-  el("r-koe").textContent = T.koe;
-  el("r-feat").textContent = T.feat || T.desc;
-  // 傾向グラフ（上位3タイプ）
-  const chart = el("r-chart");
-  if(chart && score){
-    const arr = [];
-    for(let i=1;i<=12;i++) arr.push([i, score[i]||0]);
-    arr.sort((a,b)=> b[1]-a[1] || a[0]-b[0]);
-    const top = arr.slice(0,3);
-    const max = top[0][1] || 1;
-    chart.innerHTML =
-      '<div style="font-size:13px;color:var(--sub);text-align:center;margin:18px 0 12px;letter-spacing:.08em">あなたの傾向（上位3タイプ）</div>' +
-      top.map(function(p){
-        var i=p[0], v=p[1], w=Math.round(v/max*100), on=(i===t);
-        return '<div style="display:flex;align-items:center;gap:8px;margin:7px 0;font-size:11.5px">'
-          +'<span style="flex:none;width:7.5em;text-align:right;white-space:nowrap;color:var(--ink)">'+TYPES[i].name+'</span>'
-          +'<span style="flex:1;background:var(--soft);border-radius:99px;height:10px;overflow:hidden">'
-          +'<i style="display:block;height:100%;border-radius:99px;width:'+w+'%;background:'+(on?'var(--accent-d)':'var(--accent)')+';opacity:'+(on?1:.5)+'"></i></span>'
-          +'</div>';
-      }).join('');
-  }
-  el("r-lead").textContent = "で、ここからが本題です👇";
-  el("r-cta").href = RESULT_LINE_URLS[t] || "#";
-  show("screen-result");
 }
+$("backBtn").onclick = () => {
+  if(state.idx===0){ show("scr-gender"); return; }
+  state.idx--; save(); renderQ();
+};
+
+function judge(){
+  const sum={}, cnt={}, core={};
+  for(const t of [1,2,3,4,5,6,7]){ sum[t]=0; cnt[t]=0; core[t]=0; }
+  QUESTIONS.forEach((qu,i)=>{
+    const v = state.answers[i]||3;
+    sum[qu.t]+=v; cnt[qu.t]++;
+    if(qu.k) core[qu.t]+=v;
+    if(qu.rev){ sum[qu.rev]+=(6-v); cnt[qu.rev]++; }
+  });
+  const score={};
+  for(const t of [1,2,3,4,5,6,7]) score[t]=(sum[t]/cnt[t])*3*COEF[t];
+  let best=[1];
+  for(const t of [2,3,4,5,6,7]){
+    if(score[t]>score[best[0]]+1e-9) best=[t];
+    else if(Math.abs(score[t]-score[best[0]])<=1e-9) best.push(t);
+  }
+  let winner;
+  if(best.length===1) winner=best[0];
+  else{
+    const md=Math.max(...best.map(t=>core[t]));
+    const b2=best.filter(t=>core[t]===md);
+    winner = b2.length===1 ? b2[0] : TIE_PRIORITY.find(t=>b2.includes(t));
+  }
+  return {winner, score};
+}
+
+function showResult(){
+  const {winner, score} = judge();
+  const c = TYPES[state.gender||"f"][winner];
+  $("cardImg").src = IMAGE_BASE + c.img;
+  $("cardImg").onerror = ()=>{ $("cardImg").style.display="none"; $("rnameBox").classList.remove("hidden"); };
+  $("rRuby").textContent = "— " + c.ruby + " —";
+  $("rName").textContent = "『" + c.name + "』";
+  $("rCatch").textContent = c.catch;
+  const word = "【診断結果" + c.no + "】";
+  $("aikotoba").textContent = word;
+  const url = RESULT_LINE_URLS[c.no];
+  $("lineBtn").onclick = ()=>{
+    if(url){ location.href=url; }
+    else{
+      navigator.clipboard && navigator.clipboard.writeText(word);
+      alert("合言葉をコピーしました。LINEのトークに貼り付けて送ってください。");
+    }
+  };
+  show("scr-result");
+}
+
+// 復元
+load();
+if(state.gender) applyTheme(state.gender);
+if(state.gender && state.answers.length>0 && state.idx<QUESTIONS.length){ renderQ(); }
+else if(state.gender && state.idx>=QUESTIONS.length && state.answers.length===QUESTIONS.length){ showResult(); }
 </script>
 </body>
 </html>
